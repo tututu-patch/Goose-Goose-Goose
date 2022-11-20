@@ -10,4 +10,4 @@
 
 using namespace std;
 
-void ESPMain(list<DWORD_PTR> PlayerControllerList, playerInfo player[], DWORD_PTR LocalPlayerController, bool drawLine, bool drawBox, bool showPlayerInfo);
+void ESPMain(list<DWORD_PTR> PlayerControllerList, playerInfo player[], bool drawLine, bool drawBox, bool showPlayerInfo);

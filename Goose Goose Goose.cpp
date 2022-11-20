@@ -6,6 +6,8 @@
 #include "cheat/gameManager.hpp"
 #include "cheat/esp.hpp"
 #include "cheat/unityEngineCamera.hpp"
+#include "cheat/playerController.hpp"
+#include "cheat/localPlayer.hpp"
 
 #include "MinHook/include/MinHook.h"
 #include "kiero/kiero.h"
@@ -22,13 +24,10 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 typedef HRESULT(WINAPI* PRESENT)(IDXGISwapChain*, UINT, UINT);
 typedef LRESULT(WINAPI* WNDPROC)(HWND, UINT, WPARAM, LPARAM);
-typedef void* (_stdcall* tUpdate)(void* PlayerController);
 
 using namespace std;
 
 ExampleAppLog appLog;
-
-tUpdate oUpdate;
 
 PRESENT oPre = NULL;
 WNDPROC oWndproc = NULL;
@@ -37,6 +36,12 @@ ID3D11Device* pDevice = NULL;
 ID3D11DeviceContext* pContext = NULL;
 ID3D11RenderTargetView* mainRenderTargetView;
 
+extern playerInfo player[16];
+
+extern list<DWORD_PTR> PlayerControllerList;
+extern list<DWORD_PTR>::iterator ListIterator;
+
+
 bool init = false;
 bool canRender = true;
 
@@ -44,12 +49,6 @@ bool canDrawESP = false;
 bool drawLine = false;
 bool drawBox = false;
 bool showPlayerInfo = false;
-
-list<DWORD_PTR> PlayerControllerList;
-list<DWORD_PTR>::iterator ListIterator;
-
-static playerInfo player[16]; // max player is 16.
-DWORD_PTR LocalPlayerController = 0;
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	// Don't ignore closing window even the menu opened.
@@ -66,30 +65,6 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 
 	return CallWindowProc(oWndproc, hWnd, uMsg, wParam, lParam);
 
-}
-
-tUpdate hkUpdate(void* PlayerController)
-{
-
-	if (*(bool*)((DWORD_PTR)PlayerController + GooseGooseDuck::PlayerController::isLocal))
-		LocalPlayerController = (DWORD_PTR)PlayerController;
-
-	static list<DWORD_PTR>::iterator tmpIter;
-	tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
-
-	if (tmpIter == PlayerControllerList.end()) {
-		PlayerControllerList.push_back((DWORD_PTR)PlayerController);
-	}
-
-	int cnt = 0;
-
-	for (ListIterator = PlayerControllerList.begin(); ListIterator != PlayerControllerList.end(); ListIterator++) {
-		player[cnt].update(*ListIterator); // wrong reference issue
-		player[cnt].updatePosition(*ListIterator);
-		cnt++;
-	}
-
-	return (tUpdate)oUpdate(PlayerController);
 }
 
 HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
@@ -119,7 +94,8 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 			ImVector<ImWchar> ranges;
 			ImFontGlyphRangesBuilder builder;
 
-			builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			//builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+			builder.AddRanges(io.Fonts->GetGlyphRangesChineseFull());
 			builder.AddRanges(io.Fonts->GetGlyphRangesCyrillic());
 			builder.AddRanges(io.Fonts->GetGlyphRangesJapanese());
 			builder.AddRanges(io.Fonts->GetGlyphRangesKorean());
@@ -228,7 +204,8 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 
 		}
 
-		if ((canDrawESP == true) && (getGameState() == gameStateCode::InGame)) ESPMain(PlayerControllerList, player, LocalPlayerController, drawLine, drawBox, showPlayerInfo); // ugly
+		if ((canDrawESP == true) && (getGameState() != gameStateCode::InGame) && (player[0].isPlayerRoleSet == true)) 
+			ESPMain(PlayerControllerList, player, drawLine, drawBox, showPlayerInfo); // ugly
 
 		ImGui::Render();
 		pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);
@@ -245,14 +222,8 @@ void MainFunc(HMODULE hModule) {
 
 		bool hooked = true;
 
-		if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA), hkUpdate, (void**)&oUpdate) != MH_OK
-			|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA)) != MH_OK) {
-			appLog.AddLog("[Error] Can't create or enable Update hook.\n");
-			hooked = false;
-		}
-		else
-			appLog.AddLog("[Info] Successfully create and enable Update hook.\n");
-
+		if (playerControllerHook()) appLog.AddLog("[Info] Successfully create and enable playerController hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA);
+		else { appLog.AddLog("[Error] Can't create or enable playerController hook.\n"); hooked = false; }
 
 		if (CineMachineHook()) appLog.AddLog("[Info] Successfully create and enable CineMachine hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::damp);
 		else { appLog.AddLog("[Error] Can't create or enable ChineMachine hook.\n"); hooked = false; }

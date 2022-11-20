@@ -86,6 +86,9 @@
     <ClInclude Include="cheat\unityEngineCamera.hpp">
       <Filter>Header files\cheat</Filter>
     </ClInclude>
+    <ClInclude Include="cheat\localPlayer.hpp">
+      <Filter>Header files\cheat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goose Goose Goose.cpp">
@@ -131,6 +134,9 @@
       <Filter>Source files\cheat</Filter>
     </ClCompile>
     <ClCompile Include="cheat\unityEngineCamera.cpp">
+      <Filter>Source files\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="cheat\localPlayer.cpp">
       <Filter>Source files\cheat</Filter>
     </ClCompile>
   </ItemGroup>
