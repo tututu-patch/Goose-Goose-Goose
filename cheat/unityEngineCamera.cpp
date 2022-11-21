@@ -5,9 +5,8 @@ tWorldToScreenPoint oWorldToScreenPoint;
 void* ins;
 
 Vector3 hkWorldToScreenPoint(void* instance, Vector3 position) {
-	if (getGameState() == gameStateCode::InGame) ins = instance;
+	if (getGameState() == gameStateCode::InGame) ins = instance;  // Use WndProc uMsg for condition.
 	else ins = 0;
-	//else ins = 0;
 
 	return oWorldToScreenPoint(instance, position);
 }

@@ -8,14 +8,9 @@ void ESPMain(list<DWORD_PTR> PlayerControllerList, playerInfo player[], bool dra
 	if (isCameraInstanceSet() == true) {
 		list<DWORD_PTR>::iterator ListIterator;
 		ImGui::SetNextWindowPos(ImVec2(0, 0));
-		ImGui::SetNextWindowSize(ImVec2(1280, 720)); // 640, 360
+		ImGui::SetNextWindowSize(ImVec2(1280, 720)); // GetClientRect()
 		ImGui::Begin("Overlay", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoInputs | ImGuiWindowFlags_NoBackground);
 		ImDrawList* draw_list = ImGui::GetWindowDrawList();
-
-		char stateInt[5];
-		int tempInt = getGameState();
-		sprintf(stateInt, "%d", tempInt);
-		draw_list->AddText(ImVec2(1270, 695), ImColor(1.0f, 1.0f, 1.0f, 1.0f), stateInt);
 
 		int cnt = 0;
 		Vector3 LocalPlayerPos = WorldToScreenPoint(player[0].pos);

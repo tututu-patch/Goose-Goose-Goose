@@ -155,7 +155,6 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 
 					for (ListIterator = PlayerControllerList.begin(); ListIterator != PlayerControllerList.end(); ListIterator++) {
 						const bool is_selected = (CurrentIdx == cnt);
-						player[cnt].update(*ListIterator); // wrong reference == cause crash
 
 						if (ImGui::Selectable(player[cnt].nickname, is_selected)) {
 							ImGui::SetItemDefaultFocus();

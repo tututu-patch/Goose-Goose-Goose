@@ -11,6 +11,15 @@ playerInfo player[16]; // max player is 16.
 list<DWORD_PTR> PlayerControllerList;
 list<DWORD_PTR>::iterator ListIterator;
 
+/*
+-------------------------------------------------------------PLAN------------------------------------------------------------------------------
+1. Handlers.GameHandlers.PlayerHandlers.LocalPlayer has a field called Player<PlayerController>. 0x18
+2. And PlayerController has a filed called playersList.  Dictionary<string, PlayerController>. 0x10
+3. I will use localPlayer instead of using the under codes.
+4. This would be more stable.
+5. The cheat no more crash the game by referencing wrong instance.
+--------------------------------------------------------------------------------------------------------------------------------------------------
+*/
 
 tUpdate hkUpdate(void* PlayerController)
 {

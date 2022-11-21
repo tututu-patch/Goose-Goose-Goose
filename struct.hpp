@@ -133,7 +133,6 @@ struct playerInfo {
 		isRemoteSpectating = false;
 		nickname[0] = '\0';
 		roleName[0] = '\0';
-		//memcpy(nickname, '\0', 17);
 		pos = { 0.0f, 0.0f };
 	}
 
@@ -146,19 +145,12 @@ struct playerInfo {
 		if (ptrPlayerController != PlayerController) {
 			ptrPlayerController = PlayerController;
 			wchar_t tmpNick[42] = L"";
-			wchar_t tmpRoleName[128] = L"";
 
 			memcpy(tmpNick,
 				(DWORD_PTR*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::nickname) + 0x14),
 				sizeof(wchar_t) * *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::nickname) + 0x10) + 1);
 
-			memcpy(tmpRoleName,
-				(DWORD_PTR*)(*(DWORD_PTR*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::playerNameRoleText) + GooseGooseDuck::PlayerController::m_text) + 0x14),
-				sizeof(wchar_t) * *(int*)(*(DWORD_PTR*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::playerNameRoleText) + GooseGooseDuck::PlayerController::m_text) + 0x10)
-			);
-
 			WideCharToMultiByte(CP_UTF8, 0, tmpNick, -1, nickname, WideCharToMultiByte(CP_UTF8, 0, tmpNick, -1, NULL, 0, NULL, NULL), NULL, NULL);
-			WideCharToMultiByte(CP_UTF8, 0, tmpRoleName, -1, roleName, WideCharToMultiByte(CP_UTF8, 0, tmpRoleName, -1, NULL, 0, NULL, NULL), NULL, NULL);
 		}
 
 #define GET_BOOL_VALUE(X) *(bool*)(PlayerController+X)

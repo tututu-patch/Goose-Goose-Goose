@@ -1,6 +1,11 @@
 #pragma once
 
 namespace GooseGooseDuck {
+	namespace localPlayer {
+		constexpr int update = 0xCC5EB0;
+		constexpr int Player = 0x18; // public PlayerController Player;
+	}
+
 	namespace unityEngineCamera {
 		constexpr int WorldToScreenPoint = 0x35E24C0; // public Vector3 WorldToScreenPoint(Vector3 position)
 	}
@@ -33,6 +38,7 @@ namespace GooseGooseDuck {
 		constexpr int playerNameRoleText = 0x120; // pointer 
 		constexpr int m_text = 0xD8; // c# string   length: [[playerController+playerNameRoleText] + 216] + 0x10    string: [[playerController+playerNameRoleText] + 216] + 0x14
 		constexpr int position = 0x2B8; // Value name is randomized. x, y. Float, Float
+		constexpr int playersList = 0x10;
 		/*
 		[Notable offsets]
 		2B0, Player location, Float Float,   x, y
