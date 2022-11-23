@@ -118,9 +118,6 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>imgui</Filter>
     </ClCompile>
-    <ClCompile Include="cheat\esp.cpp">
-      <Filter>Source files</Filter>
-    </ClCompile>
     <ClCompile Include="cheat\gameManager.cpp">
       <Filter>Source files\cheat</Filter>
     </ClCompile>
@@ -137,6 +134,9 @@
       <Filter>Source files\cheat</Filter>
     </ClCompile>
     <ClCompile Include="cheat\localPlayer.cpp">
+      <Filter>Source files\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="cheat\esp.cpp">
       <Filter>Source files\cheat</Filter>
     </ClCompile>
   </ItemGroup>

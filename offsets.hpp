@@ -38,7 +38,7 @@ namespace GooseGooseDuck {
 		constexpr int playerNameRoleText = 0x120; // pointer 
 		constexpr int m_text = 0xD8; // c# string   length: [[playerController+playerNameRoleText] + 216] + 0x10    string: [[playerController+playerNameRoleText] + 216] + 0x14
 		constexpr int position = 0x2B8; // Value name is randomized. x, y. Float, Float
-		constexpr int playersList = 0x10;
+		constexpr int playersList = 0x10; // It's in static field.....
 		/*
 		[Notable offsets]
 		2B0, Player location, Float Float,   x, y

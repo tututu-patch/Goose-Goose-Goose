@@ -23,20 +23,25 @@ list<DWORD_PTR>::iterator ListIterator;
 
 tUpdate hkUpdate(void* PlayerController)
 {
+	if (getGameState() != gameStateCode::InLobby) {
+		static list<DWORD_PTR>::iterator tmpIter;
+		tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
 
-	static list<DWORD_PTR>::iterator tmpIter;
-	tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
+		if (tmpIter == PlayerControllerList.end()) {
+			PlayerControllerList.push_back((DWORD_PTR)PlayerController);
+		}
 
-	if (tmpIter == PlayerControllerList.end()) {
-		PlayerControllerList.push_back((DWORD_PTR)PlayerController);
+		int cnt = 0;
+
+		for (ListIterator = PlayerControllerList.begin(); ListIterator != PlayerControllerList.end(); ListIterator++) {
+			player[cnt].update(*ListIterator); // wrong reference issue
+			player[cnt].updatePosition(*ListIterator);
+			cnt++;
+		}
 	}
-
-	int cnt = 0;
-
-	for (ListIterator = PlayerControllerList.begin(); ListIterator != PlayerControllerList.end(); ListIterator++) {
-		player[cnt].update(*ListIterator); // wrong reference issue
-		player[cnt].updatePosition(*ListIterator);
-		cnt++;
+	else {
+		PlayerControllerList.clear();
+		for (int i = 0; i < PlayerControllerList.size(); i++) { player[i].reset(); }
 	}
 
 	return (tUpdate)oUpdate(PlayerController);

@@ -103,7 +103,7 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 			builder.AddRanges(io.Fonts->GetGlyphRangesVietnamese());
 			builder.BuildRanges(&ranges);
 
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\malgun.ttf", 16.0f, NULL, ranges.Data);
+			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\tahoma.ttf", 16.0f, NULL, ranges.Data);
 			io.Fonts->Build();
 
 			ImGui::StyleColorsDark();
@@ -160,7 +160,7 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 							ImGui::SetItemDefaultFocus();
 							CurrentIdx = cnt;
 							appLog.AddLog(u8"\n[Player Info]\n"
-								"PlayerController: %012llX\n"
+								"PlayerController: %012llX   %p\n"
 								"Nickname: %s\n"
 								"isRoleSet: %s\n"
 								"RoleID: %d\n"
@@ -173,6 +173,7 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 								"isSpectator: %s\n"
 								"position X: %f, Y: %f\n",
 								player[cnt].ptrPlayerController,
+								&(player[cnt].ptrPlayerController),
 								player[cnt].nickname,
 								player[cnt].isPlayerRoleSet ? "True" : "False",
 								player[cnt].playerRoleId,
@@ -233,6 +234,9 @@ void MainFunc(HMODULE hModule) {
 
 		if (unityEngineCameraHook()) appLog.AddLog("[Info] Successfully create and enable WorldToScreenPoint hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::WorldToScreenPoint);
 		else { appLog.AddLog("[Error] Can't create or enable WorldToScreenPoint hook.\n"); hooked = false; }
+
+		if (localPlayerHook()) appLog.AddLog("[Info] Successfully create and enable localPlayer hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::update);
+		else { appLog.AddLog("[Error] Can't create or enable localPlayer hook.\n"); hooked = false; }
 
 		// define KIERO_USE_MINHOOK must be 1
 		// the index of the required function can be found in the METHODSTABLE.txt
