@@ -82,7 +82,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableEnhancedInstructionSet>AdvancedVectorExtensions</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir);$(SolutionDir)\dependencies;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
     </ClCompile>
     <Link>
@@ -102,6 +102,7 @@
     <ClInclude Include="cheat\localPlayer.hpp" />
     <ClInclude Include="cheat\playerController.hpp" />
     <ClInclude Include="cheat\unityEngineCamera.hpp" />
+    <ClInclude Include="config.hpp" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_dx11.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="cheat\localPlayer.cpp" />
     <ClCompile Include="cheat\playerController.cpp" />
     <ClCompile Include="cheat\unityEngineCamera.cpp" />
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="Goose Goose Goose.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />

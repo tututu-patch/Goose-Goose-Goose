@@ -89,6 +89,9 @@
     <ClInclude Include="cheat\localPlayer.hpp">
       <Filter>Header files\cheat</Filter>
     </ClInclude>
+    <ClInclude Include="config.hpp">
+      <Filter>Header files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goose Goose Goose.cpp">
@@ -138,6 +141,9 @@
     </ClCompile>
     <ClCompile Include="cheat\esp.cpp">
       <Filter>Source files\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="config.cpp">
+      <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

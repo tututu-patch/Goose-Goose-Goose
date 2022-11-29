@@ -1,6 +1,7 @@
 ﻿#include "struct.hpp"
 #include "utils.hpp"
 #include "offsets.hpp"
+#include "config.hpp"
 
 #include "cheat/cinemachine.hpp"
 #include "cheat/gameManager.hpp"
@@ -43,22 +44,17 @@ extern list<DWORD_PTR>::iterator ListIterator;
 
 
 bool init = false;
-bool canRender = true;
-
-bool canDrawESP = false;
-bool drawLine = false;
-bool drawBox = false;
-bool showPlayerInfo = false;
+config_container conf_cont;
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	// Don't ignore closing window even the menu opened.
 	//https://learn.microsoft.com/en-us/windows/win32/winmsg/about-messages-and-message-queues#system-defined-messages
 	if (uMsg == WM_KEYDOWN && wParam == VK_INSERT) {
-		canRender = !canRender;
+		conf_cont.canRender = !conf_cont.canRender;
 		return false;
 	}
 
-	if (canRender) {
+	if (conf_cont.canRender) {
 		ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 		return true;
 	}
@@ -103,7 +99,7 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 			builder.AddRanges(io.Fonts->GetGlyphRangesVietnamese());
 			builder.BuildRanges(&ranges);
 
-			io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\tahoma.ttf", 16.0f, NULL, ranges.Data);
+			io.Fonts->AddFontFromFileTTF("C:/Windows/Fonts/tahoma.ttf", 16.0f, NULL, ranges.Data);
 			io.Fonts->Build();
 
 			ImGui::StyleColorsDark();
@@ -114,13 +110,13 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 			return oPre(pSC, SyncInterval, Flags);
 	}
 
-	if (canRender || canDrawESP) {
+	if (conf_cont.canRender || conf_cont.canDrawESP) {
 
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 
-		if (canRender)
+		if (conf_cont.canRender)
 		{
 
 			{
@@ -195,17 +191,17 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 
 			{
 				ImGui::Begin("ESP");
-				ImGui::Checkbox("Enable", &canDrawESP);
-				ImGui::Checkbox("Draw line", &drawLine);
-				ImGui::Checkbox("Draw box", &drawBox);
-				ImGui::Checkbox("Show players info", &showPlayerInfo);
+				ImGui::Checkbox("Enable", &(conf_cont.canDrawESP));
+				ImGui::Checkbox("Draw line", &(conf_cont.drawLine));
+				ImGui::Checkbox("Draw box", &(conf_cont.drawBox));
+				ImGui::Checkbox("Show players info", &(conf_cont.showPlayerInfo));
 				ImGui::End();
 			}
 
 		}
 
-		if ((canDrawESP == true) && (getGameState() != gameStateCode::InGame) && (player[0].isPlayerRoleSet == true)) 
-			ESPMain(PlayerControllerList, player, drawLine, drawBox, showPlayerInfo); // ugly
+		if ((conf_cont.canDrawESP == true) && (getGameState() != gameStateCode::InGame) && (player[0].isPlayerRoleSet == true))
+			ESPMain(PlayerControllerList, player, conf_cont.drawLine, conf_cont.drawBox, conf_cont.showPlayerInfo); // ugly
 
 		ImGui::Render();
 		pContext->OMSetRenderTargets(1, &mainRenderTargetView, NULL);
@@ -221,6 +217,9 @@ void MainFunc(HMODULE hModule) {
 	{
 
 		bool hooked = true;
+
+		if (initialize_config(conf_cont) == true) { appLog.AddLog("[Info] Successfully loaded settings from config.json\n"); }
+		else { appLog.AddLog("[Error] Couldn't load settings. Use default settings...\n"); }
 
 		if (playerControllerHook()) appLog.AddLog("[Info] Successfully create and enable playerController hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA);
 		else { appLog.AddLog("[Error] Can't create or enable playerController hook.\n"); hooked = false; }

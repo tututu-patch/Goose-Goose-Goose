@@ -4,6 +4,7 @@
 #include "offsets.hpp"
 #include "cheat/gameManager.hpp"
 #include "GameData.hpp"
+#include "utils.hpp"
 #include <Windows.h>
 
 // from imgui_demo.cpp
@@ -101,6 +102,14 @@ struct Vector2
 	float x, y;
 };
 
+struct config_container {
+	bool canRender = true;
+	bool canDrawESP = false;
+	bool drawLine = false;
+	bool drawBox = false;
+	bool showPlayerInfo = false;
+};
+
 struct playerInfo {
 	DWORD_PTR ptrPlayerController = 0;
 	bool isSilenced = false;
@@ -167,6 +176,9 @@ struct playerInfo {
 		isSpectator = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isSpectator);
 		invisibilityDistance = GET_INT_VALUE(GooseGooseDuck::PlayerController::invisibilityDistance);
 		isRemoteSpectating = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isRemoteSpectating);
+
+		roleName[0] = '\0';
+		strcat(roleName, returnRoleName(playerRoleId));
 
 		if (isPlayerRoleSet)
 			playerRoleId = *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::playerRoleId) + 0x10);
