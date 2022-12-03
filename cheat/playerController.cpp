@@ -23,7 +23,7 @@ list<DWORD_PTR>::iterator ListIterator;
 
 tUpdate hkUpdate(void* PlayerController)
 {
-	if (getGameState() != gameStateCode::InLobby) {
+	if (getGameState() != gameStateCode::InGame) {
 		static list<DWORD_PTR>::iterator tmpIter;
 		tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
 

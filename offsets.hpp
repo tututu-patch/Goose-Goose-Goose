@@ -2,26 +2,26 @@
 
 namespace GooseGooseDuck {
 	namespace localPlayer {
-		constexpr int update = 0xCC5EB0;
+		constexpr int update = 0xC0D6E0;
 		constexpr int Player = 0x18; // public PlayerController Player;
 	}
 
 	namespace unityEngineCamera {
-		constexpr int WorldToScreenPoint = 0x35E24C0; // public Vector3 WorldToScreenPoint(Vector3 position)
+		constexpr int WorldToScreenPoint = 0x2EF1A10; // public Vector3 WorldToScreenPoint(Vector3 position)
 	}
 
 	namespace cinemachine {
-		constexpr int damp = 0x1D28630;   //Cinemachine.Utility.Damper.Damp(Vector3 initial, Vector3 dampTime, float deltaTime)
+		constexpr int damp = 0x1C8CE40;   //Cinemachine.Utility.Damper.Damp(Vector3 initial, Vector3 dampTime, float deltaTime)
 	}
 
 	namespace GameManager { 	// Managers.GameManagers.GameManager
-		constexpr int update = 0x74D3E0;
+		constexpr int update = 0x67E790;
 		constexpr int gameState = 0x18;
 	}
 
 	namespace PlayerController {
 		constexpr int flipRVA = 0x18ADB40; // Use AOBScan, outdated. NO MORE USE.
-		constexpr int updateRVA = 0xCF0950; // AOBScan too.
+		constexpr int updateRVA = 0xC385A0; // AOBScan too.
 		constexpr int isSilenced = 0xC1; // Boolean
 		constexpr int isInfected = 0xC3; // Boolean
 		constexpr int playerRoleId = 0xE8; // pointer, [instance+playerRoleId] + 0x10, int
