@@ -92,6 +92,9 @@
     <ClInclude Include="config.hpp">
       <Filter>Header files</Filter>
     </ClInclude>
+    <ClInclude Include="cheat\SpawnedPlayersManager.hpp">
+      <Filter>Header files\cheat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goose Goose Goose.cpp">
@@ -144,6 +147,9 @@
     </ClCompile>
     <ClCompile Include="config.cpp">
       <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="cheat\SpawnedPlayersManager.cpp">
+      <Filter>Source files\cheat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -245,6 +245,16 @@ const char* returnRoleName(int id) {
 	case gameRoleId::Engineer:
 		return("Engineer");
 		break;
+	case gameRoleId::Warlock:
+		return("Warlock");
+		break;
+	case gameRoleId::StreetUrchin:
+		return("StreetUrchin");
+		break;
+	case gameRoleId::Tracker:
+		return("Tracker");
+		break;
+
 
 	default:
 		return("None");

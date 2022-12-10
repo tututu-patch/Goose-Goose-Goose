@@ -3,10 +3,9 @@
 #include "struct.hpp"
 #include "utils.hpp"
 #include "MinHook/include/MinHook.h"
-
-#include <list>
+#include "gameManager.hpp"
 
 using namespace std;
 
-bool playerControllerHook();
-DWORD_PTR getPlayerControllerInstance();
+bool SpawnedPlayersManagerHook();
+DWORD_PTR getSpawnedPlayersManagerInstance();

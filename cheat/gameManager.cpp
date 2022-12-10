@@ -26,6 +26,10 @@ int getGameState() {
 #undef GET_INT_VALUE
 }
 
+DWORD_PTR getGMIns() {
+	return gm;
+}
+
 /*
 public enum MHIEPEJEFEB
 		{

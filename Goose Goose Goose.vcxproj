@@ -101,6 +101,7 @@
     <ClInclude Include="cheat\gameManager.hpp" />
     <ClInclude Include="cheat\localPlayer.hpp" />
     <ClInclude Include="cheat\playerController.hpp" />
+    <ClInclude Include="cheat\SpawnedPlayersManager.hpp" />
     <ClInclude Include="cheat\unityEngineCamera.hpp" />
     <ClInclude Include="config.hpp" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="cheat\gameManager.cpp" />
     <ClCompile Include="cheat\localPlayer.cpp" />
     <ClCompile Include="cheat\playerController.cpp" />
+    <ClCompile Include="cheat\SpawnedPlayersManager.cpp" />
     <ClCompile Include="cheat\unityEngineCamera.cpp" />
     <ClCompile Include="config.cpp" />
     <ClCompile Include="Goose Goose Goose.cpp" />

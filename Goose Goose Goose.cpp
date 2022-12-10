@@ -9,6 +9,7 @@
 #include "cheat/unityEngineCamera.hpp"
 #include "cheat/playerController.hpp"
 #include "cheat/localPlayer.hpp"
+#include "cheat/SpawnedPlayersManager.hpp"
 
 #include "MinHook/include/MinHook.h"
 #include "kiero/kiero.h"
@@ -20,6 +21,8 @@
 #include <d3d11.h>
 #include <iostream>
 #include <list>
+#include <map>
+#include <string>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
@@ -45,6 +48,8 @@ extern list<DWORD_PTR>::iterator ListIterator;
 
 bool init = false;
 config_container conf_cont;
+
+typedef map<string, DWORD_PTR> testMap;
 
 LRESULT WINAPI WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
 	// Don't ignore closing window even the menu opened.
@@ -90,8 +95,8 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 			ImVector<ImWchar> ranges;
 			ImFontGlyphRangesBuilder builder;
 
-			//builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
-			builder.AddRanges(io.Fonts->GetGlyphRangesChineseFull());
+			builder.AddRanges(io.Fonts->GetGlyphRangesChineseSimplifiedCommon()); // I don't know the difference
+			//builder.AddRanges(io.Fonts->GetGlyphRangesChineseFull());
 			builder.AddRanges(io.Fonts->GetGlyphRangesCyrillic());
 			builder.AddRanges(io.Fonts->GetGlyphRangesJapanese());
 			builder.AddRanges(io.Fonts->GetGlyphRangesKorean());
@@ -193,6 +198,15 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 				ImGui::Checkbox("Draw line", &(conf_cont.drawLine));
 				ImGui::Checkbox("Draw box", &(conf_cont.drawBox));
 				ImGui::Checkbox("Show players info", &(conf_cont.showPlayerInfo));
+				if (ImGui::Button("!")) {
+					appLog.AddLog("%012llX\n",getSpawnedPlayersManagerInstance());
+					/*testMap* tmap = (testMap*)(getPlayerControllerInstance() + 0x10);
+
+					map<string, DWORD_PTR>::iterator tmapIter;
+					for (tmapIter = tmap->begin(); tmapIter != tmap->end(); tmapIter++) {
+						appLog.AddLog("%012llX\n", tmapIter->second);
+					}*/
+				}
 				ImGui::End();
 			}
 
@@ -218,6 +232,9 @@ void MainFunc(HMODULE hModule) {
 
 		if (initialize_config(conf_cont) == true) { appLog.AddLog("[Info] Successfully loaded settings from config.json\n"); }
 		else { appLog.AddLog("[Error] Couldn't load settings. Use default settings...\n"); }
+
+		if (SpawnedPlayersManagerHook()) appLog.AddLog("[Info] Successfully create and enable SpawnedPlayersManager hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::AddSpawnedPlayer);
+		else { appLog.AddLog("[Error] Can't create or enable SpawnedPlayersManager hook.\n"); hooked = false; }
 
 		if (playerControllerHook()) appLog.AddLog("[Info] Successfully create and enable playerController hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA);
 		else { appLog.AddLog("[Error] Can't create or enable playerController hook.\n"); hooked = false; }

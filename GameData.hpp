@@ -165,7 +165,10 @@ enum gameRoleId
 	TTEThrall,
 	TTMummy,
 	SerialKiller,
-	Engineer
+	Engineer,
+	Warlock,
+	StreetUrchin,
+	Tracker
 };
 
 /*

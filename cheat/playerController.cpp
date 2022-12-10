@@ -11,6 +11,8 @@ playerInfo player[16]; // max player is 16.
 list<DWORD_PTR> PlayerControllerList;
 list<DWORD_PTR>::iterator ListIterator;
 
+DWORD_PTR inta;
+
 /*
 -------------------------------------------------------------PLAN------------------------------------------------------------------------------
 1. Handlers.GameHandlers.PlayerHandlers.LocalPlayer has a field called Player<PlayerController>. 0x18
@@ -21,9 +23,23 @@ list<DWORD_PTR>::iterator ListIterator;
 --------------------------------------------------------------------------------------------------------------------------------------------------
 */
 
+/*
+--------------------------------------------------------------CHANGE OF PLAN----------------------------------------------------------------------
+if gameState == inLobby
+    hook(Managers.PlayerManagers.SpawnedPlayersManager.AddSpawnedPlayer(string param1, SpawnedPlayerHandler param2))
+	// use param2
+	addDataToList(param2)
+
+else
+	unhook()
+	resetList()
+--------------------------------------------------------------------------------------------------------------------------------------------------
+*/
+
 tUpdate hkUpdate(void* PlayerController)
 {
-	if (getGameState() != gameStateCode::InGame) {
+	inta = (DWORD_PTR)PlayerController;
+	if (getGameState() == gameStateCode::InGame) {
 		static list<DWORD_PTR>::iterator tmpIter;
 		tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
 
@@ -54,4 +70,9 @@ bool playerControllerHook() {
 	}
 	else
 		return true;
+}
+
+DWORD_PTR getPlayerControllerInstance()
+{
+	return inta;
 }

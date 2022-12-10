@@ -6,3 +6,4 @@
 
 int getGameState();
 bool GameManagerHook();
+DWORD_PTR getGMIns();
