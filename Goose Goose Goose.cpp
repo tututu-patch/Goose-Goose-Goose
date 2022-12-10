@@ -198,15 +198,15 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 				ImGui::Checkbox("Draw line", &(conf_cont.drawLine));
 				ImGui::Checkbox("Draw box", &(conf_cont.drawBox));
 				ImGui::Checkbox("Show players info", &(conf_cont.showPlayerInfo));
-				if (ImGui::Button("!")) {
-					appLog.AddLog("%012llX\n",getSpawnedPlayersManagerInstance());
+				//if (ImGui::Button("!")) {
+				//	appLog.AddLog("%012llX\n",getSpawnedPlayersManagerInstance());
 					/*testMap* tmap = (testMap*)(getPlayerControllerInstance() + 0x10);
 
 					map<string, DWORD_PTR>::iterator tmapIter;
 					for (tmapIter = tmap->begin(); tmapIter != tmap->end(); tmapIter++) {
 						appLog.AddLog("%012llX\n", tmapIter->second);
 					}*/
-				}
+				//}
 				ImGui::End();
 			}
 
