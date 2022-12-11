@@ -16,6 +16,12 @@ Free open-source cheat software for **Goose Goose Duck**
 #### It doesn't matter if it's not fun, and it's made for those who want to win.
 #### It is also made for personal study, and I am not responsible for any problems caused by using/abusing the project.
 
+## IMPORTANT
+
+![important](https://user-images.githubusercontent.com/36528164/206893974-4451513a-0b26-401f-8237-52be9012cd3b.png)
+They added anti cheat.
+If I could, I'll solve it ASAP.
+
 ## So, how to use?
 
 Just complie it with Visual Studio, and inject with your favorite injector.
