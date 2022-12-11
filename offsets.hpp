@@ -39,7 +39,7 @@ namespace GooseGooseDuck {
 		constexpr int nickname = 0x1D0; // pointer, [instance+nickname] +  0x14, length: [instance+nickname] + 0x10
 		constexpr int invisibilityDistance = 0x32C; // int, need this?
 		constexpr int isSpectator = 0x37A; // Boolean
-		constexpr int isRemoteSpectating = 0x36B; // Boolean
+		constexpr int isRemoteSpectating = 0x37B; // Boolean
 		constexpr int position = 0x2C8; // Value name is randomized. x, y. Float, Float
 		/*
 		[Notable offsets]
