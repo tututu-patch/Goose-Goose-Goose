@@ -27,6 +27,9 @@
     <Filter Include="Source files\kiero">
       <UniqueIdentifier>{c99479ef-2750-46a0-add7-ef6844f45a22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Anti anti cheat">
+      <UniqueIdentifier>{096694ad-4122-40ea-8d10-63d295294773}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameData.hpp">
@@ -95,6 +98,9 @@
     <ClInclude Include="cheat\SpawnedPlayersManager.hpp">
       <Filter>Header files\cheat</Filter>
     </ClInclude>
+    <ClInclude Include="Anti anti cheat\Anti anti-cheat.hpp">
+      <Filter>Anti anti cheat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Goose Goose Goose.cpp">
@@ -150,6 +156,9 @@
     </ClCompile>
     <ClCompile Include="cheat\SpawnedPlayersManager.cpp">
       <Filter>Source files\cheat</Filter>
+    </ClCompile>
+    <ClCompile Include="Anti anti cheat\Anti anti-cheat.cpp">
+      <Filter>Anti anti cheat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

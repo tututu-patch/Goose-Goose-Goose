@@ -198,15 +198,33 @@ HRESULT WINAPI hkPre(IDXGISwapChain* pSC, UINT SyncInterval, UINT Flags)
 				ImGui::Checkbox("Draw line", &(conf_cont.drawLine));
 				ImGui::Checkbox("Draw box", &(conf_cont.drawBox));
 				ImGui::Checkbox("Show players info", &(conf_cont.showPlayerInfo));
-				//if (ImGui::Button("!")) {
-				//	appLog.AddLog("%012llX\n",getSpawnedPlayersManagerInstance());
-					/*testMap* tmap = (testMap*)(getPlayerControllerInstance() + 0x10);
+				if (ImGui::Button("!")) {
 
-					map<string, DWORD_PTR>::iterator tmapIter;
-					for (tmapIter = tmap->begin(); tmapIter != tmap->end(); tmapIter++) {
-						appLog.AddLog("%012llX\n", tmapIter->second);
-					}*/
-				//}
+					ImGuiIO& io = ImGui::GetIO(); (void)io;
+
+					float* Matrix = retMat();
+					for (int i = 0; i < 16; i++) {
+						appLog.AddLog("%f ", Matrix[i]);
+						if ((i + 1) % 4 == 0)
+							appLog.AddLog("\n");
+					}
+
+					Vector2 TempVec2;
+
+					if (WorldToScreen(player[0].pos, TempVec2, Matrix, io.DisplaySize.x, io.DisplaySize.y)) {
+						appLog.AddLog("\n%f %f %f %f\n", TempVec2.x, TempVec2.y, io.DisplaySize.x, io.DisplaySize.y);
+					}
+				}
+				ImGui::End();
+			}
+
+			{
+				ImGui::Begin("Misc");
+				ImGui::End();
+			}
+
+			{
+				ImGui::Begin("Config");
 				ImGui::End();
 			}
 
@@ -233,23 +251,23 @@ void MainFunc(HMODULE hModule) {
 		if (initialize_config(conf_cont) == true) { appLog.AddLog("[Info] Successfully loaded settings from config.json\n"); }
 		else { appLog.AddLog("[Error] Couldn't load settings. Use default settings...\n"); }
 
-		if (SpawnedPlayersManagerHook()) appLog.AddLog("[Info] Successfully create and enable SpawnedPlayersManager hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::AddSpawnedPlayer);
+		if (SpawnedPlayersManagerHook()) appLog.AddLog("[Info] Successfully create and enable SpawnedPlayersManager hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::fn_AddSpawnedPlayer);
 		else { appLog.AddLog("[Error] Can't create or enable SpawnedPlayersManager hook.\n"); hooked = false; }
 
-		if (playerControllerHook()) appLog.AddLog("[Info] Successfully create and enable playerController hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA);
+		if (playerControllerHook()) appLog.AddLog("[Info] Successfully create and enable playerController hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::fn_updateRVA);
 		else { appLog.AddLog("[Error] Can't create or enable playerController hook.\n"); hooked = false; }
 
-		if (CineMachineHook()) appLog.AddLog("[Info] Successfully create and enable CineMachine hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::damp);
+		if (CineMachineHook()) appLog.AddLog("[Info] Successfully create and enable CineMachine hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::fn_damp);
 		else { appLog.AddLog("[Error] Can't create or enable ChineMachine hook.\n"); hooked = false; }
 
 
-		if (GameManagerHook()) appLog.AddLog("[Info] Successfully create and enable GameManager hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::update);
+		if (GameManagerHook()) appLog.AddLog("[Info] Successfully create and enable GameManager hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::fn_update);
 		else { appLog.AddLog("[Error] Can't create or enable GameManager hook.\n"); hooked = false; }
 
-		if (unityEngineCameraHook()) appLog.AddLog("[Info] Successfully create and enable WorldToScreenPoint hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::WorldToScreenPoint);
+		if (unityEngineCameraHook()) appLog.AddLog("[Info] Successfully create and enable WorldToScreenPoint hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_WorldToScreenPoint);
 		else { appLog.AddLog("[Error] Can't create or enable WorldToScreenPoint hook.\n"); hooked = false; }
 
-		if (localPlayerHook()) appLog.AddLog("[Info] Successfully create and enable localPlayer hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::update);
+		if (localPlayerHook()) appLog.AddLog("[Info] Successfully create and enable localPlayer hook. | %X\n", GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::fn_update);
 		else { appLog.AddLog("[Error] Can't create or enable localPlayer hook.\n"); hooked = false; }
 
 		// define KIERO_USE_MINHOOK must be 1

@@ -39,7 +39,7 @@ else
 tUpdate hkUpdate(void* PlayerController)
 {
 	inta = (DWORD_PTR)PlayerController;
-	if (getGameState() == gameStateCode::InGame) {
+	if (getGameState() == gameStateCode::InGame || true) {
 		static list<DWORD_PTR>::iterator tmpIter;
 		tmpIter = std::find(PlayerControllerList.begin(), PlayerControllerList.end(), (DWORD_PTR)(PlayerController));
 
@@ -64,8 +64,8 @@ tUpdate hkUpdate(void* PlayerController)
 }
 
 bool playerControllerHook() {
-	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA), hkUpdate, (void**)&oUpdate) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::updateRVA)) != MH_OK) {
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::fn_updateRVA), hkUpdate, (void**)&oUpdate) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::PlayerController::fn_updateRVA)) != MH_OK) {
 		return false;
 	}
 	else

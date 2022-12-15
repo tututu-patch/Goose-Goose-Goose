@@ -7,6 +7,8 @@
 #include "utils.hpp"
 #include <Windows.h>
 
+const char* returnRoleName(int id);
+
 // from imgui_demo.cpp
 struct ExampleAppLog
 {
@@ -147,7 +149,7 @@ struct playerInfo {
 
 	void updatePosition(DWORD_PTR PlayerController) {
 		if (PlayerController == ptrPlayerController)
-			memcpy(&pos, (int*)(PlayerController + GooseGooseDuck::PlayerController::position), 12);
+			memcpy(&pos, (int*)(PlayerController + GooseGooseDuck::PlayerController::fl_position), 12);
 	}
 
 	void update(DWORD_PTR PlayerController) {
@@ -158,8 +160,8 @@ struct playerInfo {
 		wchar_t tmpNick[42] = L"";
 
 		memcpy(tmpNick,
-			(DWORD_PTR*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::nickname) + 0x14),
-			sizeof(wchar_t) * *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::nickname) + 0x10) + 1);
+			(DWORD_PTR*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::fl_nickname) + 0x14),
+			sizeof(wchar_t) * *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::fl_nickname) + 0x10) + 1);
 
 		WideCharToMultiByte(CP_UTF8, 0, tmpNick, -1, nickname, WideCharToMultiByte(CP_UTF8, 0, tmpNick, -1, NULL, 0, NULL, NULL), NULL, NULL);
 
@@ -167,23 +169,49 @@ struct playerInfo {
 #define GET_BOOL_VALUE(X) *(bool*)(PlayerController+X)
 #define GET_INT_VALUE(X) *(int*)(PlayerController+X)
 
-		memcpy(&pos, (int*)(PlayerController + GooseGooseDuck::PlayerController::position), 12);
-		isPlayerRoleSet = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isPlayerRoleSet);
-		isLocal = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isLocal);
-		inVent = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::inVent);
-		hasBomb = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::hasBomb);
-		isGhost = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isGhost);
-		isSpectator = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isSpectator);
-		invisibilityDistance = GET_INT_VALUE(GooseGooseDuck::PlayerController::invisibilityDistance);
-		isRemoteSpectating = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::isRemoteSpectating);
+		memcpy(&pos, (int*)(PlayerController + GooseGooseDuck::PlayerController::fl_position), 12);
+		isPlayerRoleSet = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_isPlayerRoleSet);
+		isLocal = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_isLocal);
+		inVent = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_inVent);
+		hasBomb = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_hasBomb);
+		isGhost = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_isGhost);
+		isSpectator = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_isSpectator);
+		invisibilityDistance = GET_INT_VALUE(GooseGooseDuck::PlayerController::fl_invisibilityDistance);
+		isRemoteSpectating = GET_BOOL_VALUE(GooseGooseDuck::PlayerController::fl_isRemoteSpectating);
 
 		roleName[0] = '\0';
 		strcat(roleName, returnRoleName(playerRoleId));
 
 		if (isPlayerRoleSet)
-			playerRoleId = *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::playerRoleId) + 0x10);
+			playerRoleId = *(int*)(*(DWORD_PTR*)(PlayerController + GooseGooseDuck::PlayerController::fl_playerRoleId) + 0x10);
 
 #undef GET_BOOL_VALUE
 #undef GET_INT_VALUE
 	}
+};
+
+// Handlers
+struct s_Handlers_PlayerController {
+
+};
+
+struct s_Handlers_LocalPlayer {
+	short pad_1[9];
+	s_Handlers_PlayerController Player;
+
+};
+
+struct s_Handlers_SpawnedPlayerHandler {
+
+};
+
+
+
+// Managers
+struct s_Managers_GameManager {
+
+};
+
+struct s_Managers_SpawnedPlayersManager {
+
 };

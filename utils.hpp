@@ -4,11 +4,17 @@
 #pragma once
 
 #include "GameData.hpp"
+#include "struct.hpp"
 
 //#define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
 #include <tchar.h>
 #include <Psapi.h>
 
+//https://stackoverflow.com/questions/1429336/cross-referencing-included-headers-in-c-program
+struct Vector3;
+struct Vector2;
+
 DWORD_PTR GetGameAssemblyBase(const wchar_t* targetModuleName);
 const char* returnRoleName(int id);
+bool WorldToScreen(Vector3 pos, Vector2& screen, float Matrix[16], int windowWidth, int windowHeight);

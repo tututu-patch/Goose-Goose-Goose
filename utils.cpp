@@ -1,5 +1,4 @@
 #include "utils.hpp"
-#include "GameData.hpp"
 
 //https://stackoverflow.com/questions/26572459/c-get-module-base-address-for-64bit-application
 DWORD_PTR GetProcessBaseAddress(DWORD processID, const wchar_t* targetModuleName)
@@ -260,71 +259,26 @@ const char* returnRoleName(int id) {
 		return("None");
 		break;
 	}
+}
 
-	/*
+bool WorldToScreen(Vector3 pos, Vector2& screen, float matrix[16], int windowWidth, int windowHeight)
+{
+	Vector4 clipCoords;
+	clipCoords.x = pos.x * matrix[0] + pos.y * matrix[1] + pos.z * matrix[2] + matrix[3];
+	clipCoords.y = pos.x * matrix[4] + pos.y * matrix[5] + pos.z * matrix[6] + matrix[7];
+	clipCoords.z = pos.x * matrix[8] + pos.y * matrix[9] + pos.z * matrix[10] + matrix[11];
+	clipCoords.w = pos.x * matrix[12] + pos.y * matrix[13] + pos.z * matrix[14] + matrix[15];
 
-None,
-Goose,
-Duck,
-Dodo,
-Bounty,
-Mechanic,
-Technician,
-Medium,
-Vigilante,
-Cannibal,
-Morphling,
-Sheriff,
-Silencer,
-Canadian,
-LoverDuck,
-LoverGoose,
-Vulture,
-Professional,
-Spy,
-Mimic,
-Detective,
-Pigeon,
-Birdwatcher,
-Assassin,
-Falcon,
-Hitman,
-Bodyguard,
-Snitch,
-Politician,
-Locksmith,
-Mortician,
-Celebrity,
-Party,
-Demolitionist,
-DuelingDodo,
-GHGoose,
-GHDuck,
-GHBounty,
-HNSGoose,
-HNSDuck,
-HNSBounty,
-DNDDuck,
-DNDFalcon,
-DNDVulture,
-DNDMorphling,
-FPGoose,
-ExploreGoose,
-TTVampire,
-TTPeasant,
-TTThrall,
-Spectator,
-IdentityThief,
-Adventurer,
-Avenger,
-Ninja,
-Undertaker,
-Snoop,
-Esper,
-Invisibility,
-Astral,
-Pelican,
-TTEThrall,
-TTMummy
-	*/
+	if (clipCoords.w < 0.1f)
+		return false;
+
+
+	Vector3 NDC;
+	NDC.x = clipCoords.x / clipCoords.w;
+	NDC.y = clipCoords.y / clipCoords.w;
+	NDC.z = clipCoords.z / clipCoords.w;
+
+	screen.x = (windowWidth / 2 * NDC.x) + (NDC.x + windowWidth / 2);
+	screen.y = -(windowHeight / 2 * NDC.y) + (NDC.y + windowHeight / 2);
+	return true;
 }

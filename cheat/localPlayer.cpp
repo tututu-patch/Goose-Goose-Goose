@@ -16,8 +16,8 @@ DWORD_PTR getLocalPlayerInstance() {
 }
 
 bool localPlayerHook() {
-	if(MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::update), hkLPUpdate, (void**)&oLPUpdate) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::update)) != MH_OK) {
+	if(MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::fn_update), hkLPUpdate, (void**)&oLPUpdate) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::localPlayer::fn_update)) != MH_OK) {
 	return false;
 }
 	else

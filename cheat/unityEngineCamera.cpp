@@ -1,30 +1,47 @@
 #include "unityEngineCamera.hpp"
 
 tWorldToScreenPoint oWorldToScreenPoint;
+tSet_worldToCameraMatrix oSet_worldToCameraMatrix;
 
-void* ins;
+void* CamIns;
+float* Matrix4x4;
+
 
 Vector3 hkWorldToScreenPoint(void* instance, Vector3 position) {
-	if (getGameState() == gameStateCode::InGame) ins = instance;  // Use WndProc uMsg for condition.
-	else ins = 0;
-
+	CamIns = instance;
 	return oWorldToScreenPoint(instance, position);
 }
 
-Vector3 WorldToScreenPoint(Vector3 pos) {
-	return oWorldToScreenPoint(ins, pos);
+// We don't need to click screen anymore to activate ESP!! :)))))))
+float* hkSet_worldToCameraMatrix(void* instance) {
+	Matrix4x4 = oSet_worldToCameraMatrix(instance);
+	return Matrix4x4;
 }
 
-bool isCameraInstanceSet() {
-	if (ins == 0) return false;
-	else return true;
+Vector3 WorldToScreenPoint(Vector3 pos) {
+	return oWorldToScreenPoint(CamIns, pos);
+}
+
+float* retMat() {
+	return Matrix4x4;
 }
 
 bool unityEngineCameraHook() {
-	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::WorldToScreenPoint), hkWorldToScreenPoint, (void**)&oWorldToScreenPoint) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::WorldToScreenPoint)) != MH_OK) {
-		return false;
+
+	bool hooked_well = true;
+
+	//oWorldToScreenPoint = (tWorldToScreenPoint)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_WorldToScreenPoint);
+
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_set_worldToCameraMatrix), hkSet_worldToCameraMatrix, (void**)&oSet_worldToCameraMatrix) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_set_worldToCameraMatrix)) != MH_OK) {
+		hooked_well = false;
 	}
-	else
-		return true;
+
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_WorldToScreenPoint), hkWorldToScreenPoint, (void**)&oWorldToScreenPoint) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::unityEngineCamera::fn_WorldToScreenPoint)) != MH_OK) {
+		hooked_well = false;
+	}
+
+	return hooked_well;
+	
 }

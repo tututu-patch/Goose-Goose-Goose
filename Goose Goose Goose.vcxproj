@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Anti anti cheat\Anti anti-cheat.hpp" />
     <ClInclude Include="cheat\cinemachine.hpp" />
     <ClInclude Include="cheat\esp.hpp" />
     <ClInclude Include="cheat\gameManager.hpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="GameData.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Anti anti cheat\Anti anti-cheat.cpp" />
     <ClCompile Include="cheat\cinemachine.cpp" />
     <ClCompile Include="cheat\esp.cpp" />
     <ClCompile Include="cheat\gameManager.cpp" />

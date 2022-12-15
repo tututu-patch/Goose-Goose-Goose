@@ -11,8 +11,8 @@ tGMUpdate hkGMUpdate(void* GameManager) {
 }
 
 bool GameManagerHook() {
-	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::update), hkGMUpdate, (void**)&oGMUpdate) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::update)) != MH_OK) {
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::fn_update), hkGMUpdate, (void**)&oGMUpdate) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::GameManager::fn_update)) != MH_OK) {
 		return false;
 	}
 	else
@@ -21,7 +21,7 @@ bool GameManagerHook() {
 
 int getGameState() {
 #define GET_INT_VALUE(X) *(int*)(gm+X)
-	int state = GET_INT_VALUE(GooseGooseDuck::GameManager::gameState);
+	int state = GET_INT_VALUE(GooseGooseDuck::GameManager::fl_gameState);
 	return state;
 #undef GET_INT_VALUE
 }

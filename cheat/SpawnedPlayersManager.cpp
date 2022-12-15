@@ -21,8 +21,8 @@ DWORD_PTR getSpawnedPlayersManagerInstance()
 
 bool SpawnedPlayersManagerHook()
 {
-	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::AddSpawnedPlayer), hkASP, (void**)&oASP) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::AddSpawnedPlayer)) != MH_OK) {
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::fn_AddSpawnedPlayer), hkASP, (void**)&oASP) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::SpawnedPlayersManager::fn_AddSpawnedPlayer)) != MH_OK) {
 		return false;
 	}
 	else

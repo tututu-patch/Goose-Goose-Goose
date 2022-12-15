@@ -13,8 +13,8 @@ Vector3 getDampFirstParam() { // super strong name~
 }
 
 bool CineMachineHook() {
-	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::damp), hkCineDamp, (void**)&oCineDamp) != MH_OK
-		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::damp)) != MH_OK) {
+	if (MH_CreateHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::fn_damp), hkCineDamp, (void**)&oCineDamp) != MH_OK
+		|| MH_EnableHook((void*)(GetGameAssemblyBase(L"GameAssembly.dll") + GooseGooseDuck::cinemachine::fn_damp)) != MH_OK) {
 		return false;
 	}
 	else
